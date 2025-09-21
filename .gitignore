@@ -1,4 +1,40 @@
+# Virtual environments
 .venv
+venv/
+env/
+
+# Database
 *.sqlite3
+db.sqlite3-journal
+
+# Python cache files
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+
+# Media files
+media/
+uploads/
+
+# Static files
+staticfiles/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Redis dump
+dump.rdb
+
 *.pyc
+__pycache__/

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sender Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            background-color: #f8f9fa;
+        }
+        .tab-content {
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+        .result-panel {
+            margin-top: 20px;
+            display: none;
+        }
+        .nav-tabs {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4 text-center">Email Sender Dashboard</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <ul class="nav nav-tabs" id="emailTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="simple-tab" data-bs-toggle="tab" data-bs-target="#simple-email" type="button" role="tab" aria-controls="simple-email" aria-selected="true">Simple Email</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="bulk-tab" data-bs-toggle="tab" data-bs-target="#bulk-email" type="button" role="tab" aria-controls="bulk-email" aria-selected="false">Bulk Email</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="template-tab" data-bs-toggle="tab" data-bs-target="#template-email" type="button" role="tab" aria-controls="template-email" aria-selected="false">Template Email</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="status-tab" data-bs-toggle="tab" data-bs-target="#status-check" type="button" role="tab" aria-controls="status-check" aria-selected="false">Check Status</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="emailTabsContent">
+                    <!-- Simple Email Form -->
+                    <div class="tab-pane fade show active" id="simple-email" role="tabpanel" aria-labelledby="simple-tab">
+                        <form id="simpleEmailForm">
+                            <div class="mb-3">
+                                <label for="recipient" class="form-label">Recipient Email</label>
+                                <input type="email" class="form-control" id="recipient" name="recipient_email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" name="subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="useHtml">
+                                <label class="form-check-label" for="useHtml">Use HTML Message</label>
+                            </div>
+                            <div class="mb-3 html-message-div d-none">
+                                <label for="htmlMessage" class="form-label">HTML Message</label>
+                                <textarea class="form-control" id="htmlMessage" name="html_message" rows="6"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Email</button>
+                        </form>
+                    </div>
+
+                    <!-- Bulk Email Form -->
+                    <div class="tab-pane fade" id="bulk-email" role="tabpanel" aria-labelledby="bulk-tab">
+                        <form id="bulkEmailForm">
+                            <div class="mb-3">
+                                <label for="bulkRecipients" class="form-label">Recipients (one email per line)</label>
+                                <textarea class="form-control" id="bulkRecipients" name="recipients" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bulkSubject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="bulkSubject" name="subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bulkMessage" class="form-label">Message</label>
+                                <textarea class="form-control" id="bulkMessage" name="message" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="bulkUseHtml">
+                                <label class="form-check-label" for="bulkUseHtml">Use HTML Message</label>
+                            </div>
+                            <div class="mb-3 bulk-html-message-div d-none">
+                                <label for="bulkHtmlMessage" class="form-label">HTML Message</label>
+                                <textarea class="form-control" id="bulkHtmlMessage" name="html_message" rows="6"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Bulk Email</button>
+                        </form>
+                    </div>
+
+                    <!-- Template Email Form -->
+                    <div class="tab-pane fade" id="template-email" role="tabpanel" aria-labelledby="template-tab">
+                        <form id="templateEmailForm">
+                            <div class="mb-3">
+                                <label for="templateRecipient" class="form-label">Recipient Email</label>
+                                <input type="email" class="form-control" id="templateRecipient" name="recipient_email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="templateSubject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="templateSubject" name="subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="templateName" class="form-label">Template Name</label>
+                                <select class="form-select" id="templateName" name="template_name" required>
+                                    <option value="email/welcome.html">Welcome Email</option>
+                                    <option value="email/notification.html">Notification Email</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="templateContext" class="form-label">Context (JSON)</label>
+                                <textarea class="form-control" id="templateContext" name="context" rows="6" placeholder='{"name": "John Doe", "notification_title": "New Feature", "notification_message": "We just launched a new feature!"}'></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Template Email</button>
+                        </form>
+                    </div>
+
+                    <!-- Status Check Form -->
+                    <div class="tab-pane fade" id="status-check" role="tabpanel" aria-labelledby="status-tab">
+                        <form id="statusCheckForm">
+                            <div class="mb-3">
+                                <label for="taskId" class="form-label">Task ID</label>
+                                <input type="text" class="form-control" id="taskId" name="task_id" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Check Status</button>
+                        </form>
+
+                        <hr>
+                        <div class="alert alert-info mt-3">
+                            <h5>Resources</h5>
+                            <p>Sample attachment for testing: <a href="/media/uploads/sample.txt" target="_blank">Download sample.txt</a></p>
+                            <p>Use this path for attachment tests: <code>/home/priyanshukumar/Desktop/whatbytes-django-advance/assign-celery/media/uploads/sample.txt</code></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Panel -->
+                <div class="card result-panel" id="resultPanel">
+                    <div class="card-header">
+                        <h5>Result</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="resultContent" class="bg-light p-3 rounded"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle HTML message textarea visibility
+            document.getElementById('useHtml').addEventListener('change', function() {
+                document.querySelector('.html-message-div').classList.toggle('d-none', !this.checked);
+            });
+
+            document.getElementById('bulkUseHtml').addEventListener('change', function() {
+                document.querySelector('.bulk-html-message-div').classList.toggle('d-none', !this.checked);
+            });
+
+            // Simple Email Form
+            document.getElementById('simpleEmailForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    recipient_email: document.getElementById('recipient').value,
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value
+                };
+
+                if (document.getElementById('useHtml').checked) {
+                    formData.html_message = document.getElementById('htmlMessage').value;
+                }
+
+                sendRequest('/api/send-email/', formData);
+            });
+
+            // Bulk Email Form
+            document.getElementById('bulkEmailForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const recipients = document.getElementById('bulkRecipients').value.split('\n')
+                    .map(email => email.trim())
+                    .filter(email => email !== '');
+
+                const formData = {
+                    recipient_list: recipients,
+                    subject: document.getElementById('bulkSubject').value,
+                    message: document.getElementById('bulkMessage').value
+                };
+
+                if (document.getElementById('bulkUseHtml').checked) {
+                    formData.html_message = document.getElementById('bulkHtmlMessage').value;
+                }
+
+                sendRequest('/api/send-bulk-email/', formData);
+            });
+
+            // Template Email Form
+            document.getElementById('templateEmailForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    recipient_email: document.getElementById('templateRecipient').value,
+                    subject: document.getElementById('templateSubject').value,
+                    template_name: document.getElementById('templateName').value
+                };
+
+                const contextText = document.getElementById('templateContext').value.trim();
+                if (contextText) {
+                    try {
+                        formData.context = JSON.parse(contextText);
+                    } catch (error) {
+                        showResult({ error: 'Invalid JSON in context field' });
+                        return;
+                    }
+                }
+
+                sendRequest('/api/send-template-email/', formData);
+            });
+
+            // Status Check Form
+            document.getElementById('statusCheckForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const taskId = document.getElementById('taskId').value;
+
+                fetch(`/api/email-status/${taskId}/`)
+                    .then(response => response.json())
+                    .then(data => showResult(data))
+                    .catch(error => showResult({ error: error.message }));
+            });
+
+            // Helper function to send API requests
+            function sendRequest(url, data) {
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => showResult(data))
+                .catch(error => showResult({ error: error.message }));
+            }
+
+            // Get CSRF token from cookies
+            function getCsrfToken() {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; csrftoken=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return '';
+            }
+
+            // Display result
+            function showResult(data) {
+                const resultPanel = document.getElementById('resultPanel');
+                const resultContent = document.getElementById('resultContent');
+
+                resultContent.textContent = JSON.stringify(data, null, 2);
+                resultPanel.style.display = 'block';
+                resultPanel.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
